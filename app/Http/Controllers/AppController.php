@@ -13,6 +13,8 @@ use App\Models\VehiculeSpecification;
 use App\Models\VehiculeLocationPrice;
 use App\Models\VehiculeMedia;
 use App\Models\VehiculeSellPrice;
+use Illuminate\Validation\ValidationException;
+use Illuminate\Database\QueryException;
 
 class AppController extends Controller
 {
@@ -34,10 +36,7 @@ class AppController extends Controller
         $features = Feature::orderBy('libelle', 'ASC')->get();
         $allCars = Vehicule::with("medias")
         ->with("brand")
-        ->with("features.feature")
-        ->with("specifications.specification")
-        ->with("location")
-        ->with("vente")->orderBy("id", "DESC")->get();
+        ->orderBy("id", "DESC")->get();
         return view("pages.carsManagement", [
             "vehicules"=>$allCars,
             "brands"=> $brands,
@@ -48,73 +47,80 @@ class AppController extends Controller
 
     public function createCar(Request $request)
     {
-    $rules = [
-        'vehicule.libelle' => 'required|string',
-        'vehicule.description' => 'required|string',
-        'vehicule.brand_id' => 'required|int|exists:car_brands,id',
-        'sell_price.amount' => 'nullable|string',
-        'sell_price.currencie' => 'nullable|string',
-        'location_price.amount' => 'nullable|string',
-        'location_price.currencie' => 'nullable|string',
-        'specifications.*.specification_id' => 'required|int',
-        'specifications.*.spec_value' => 'required|string',
-        'features.*.feature_id' => 'required|int',
-        'features.*.feat_value' => 'required|string',
-        'medias.*.media_path' => 'required|file' // Validation pour les fichiers (images)
-    ];
+        $rules = [
+            'vehicule.libelle' => 'required|string',
+            'vehicule.description' => 'required|string',
+            'vehicule.brand_id' => 'required|int|exists:car_brands,id',
+            'vehicule.sell' => 'nullable|string',
+            'vehicule.loan' => 'nullable|string',
+            'specifications.*.specification_id' => 'required|int',
+            'specifications.*.spec_value' => 'required|string',
+            'features.*.feature_id' => 'required|int',
+            'features.*.feat_value' => 'required|string',
+            'medias' => 'required|array', // Validation pour les fichiers (images)
+            'medias.*.media_path' => 'required|file' // Validation pour les fichiers (images)
+        ];
+        try {
+            // Validation des données
+            $data = $request->validate($rules);
 
-    // Appel à la méthode du trait pour la validation et gestion des exceptions
-    return $this->validateAndHandle($request, $rules, function ($data) {
-        // Création du véhicule
-        $vehicule = Vehicule::create($data["vehicule"]);
+            // Exécution de la logique de callback avec les données validées
+            $vehicule = Vehicule::create($data["vehicule"]);
 
-        if ($vehicule) {
-            // Gestion des spécifications
-            if ($data["specifications"]) {
-                foreach ($data["specifications"] as $spec) {
-                    $spec["vehicule_id"] = $vehicule->id;
-                    VehiculeSpecification::create($spec);
+            if ($vehicule) {
+                // Gestion des spécifications
+                if ($data["specifications"]) {
+                    foreach ($data["specifications"] as $spec) {
+                        $spec["vehicule_id"] = $vehicule->id;
+                        VehiculeSpecification::create($spec);
+                    }
                 }
-            }
 
-            // Gestion des fonctionnalités
-            if ($data["features"]) {
-                foreach ($data["features"] as $feat) {
-                    $feat["vehicule_id"] = $vehicule->id;
-                    VehiculeFeature::create($feat);
+                // Gestion des fonctionnalités
+                if ($data["features"]) {
+                    foreach ($data["features"] as $feat) {
+                        $feat["vehicule_id"] = $vehicule->id;
+                        VehiculeFeature::create($feat);
+                    }
                 }
-            }
 
-            // Gestion du prix de location
-            if ($data["location_price"]) {
-                $data["location_price"]["vehicule_id"] = $vehicule->id;
-                VehiculeLocationPrice::create($data["location_price"]);
-            }
 
-            // Gestion du prix de vente
-            if ($data["sell_price"]) {
-                $data["sell_price"]["vehicule_id"] = $vehicule->id;
-                VehiculeSellPrice::create($data["sell_price"]);
-            }
-
-            // Sauvegarde des médias (images)
-            if ($data["medias"]) {
-                foreach ($data["medias"] as $media) {
-                    if ($media['media_path']->isValid()) {
-                        // Gérer le stockage des images
-                        $path = $media['media_path']->store('public/vehicules'); // Enregistre dans le dossier 'vehicules'
-                        $mediaPath = basename($path); // Nom du fichier
-                        // Sauvegarde du chemin du média dans la base de données
-                        VehiculeMedia::create([
-                            'vehicule_id' => $vehicule->id,
-                            'media_path' => url('storage/vehicules/' . $mediaPath)
-                        ]);
+                // Sauvegarde des médias (images)
+                if ($data["medias"]) {
+                    foreach ($data["medias"] as $media) {
+                        if ($media['media_path']->isValid()) {
+                            // Gérer le stockage des images
+                            $path = $media['media_path']->store('public/vehicules'); // Enregistre dans le dossier 'vehicules'
+                            $mediaPath = basename($path); // Nom du fichier
+                            // Sauvegarde du chemin du média dans la base de données
+                            VehiculeMedia::create([
+                                'vehicule_id' => $vehicule->id,
+                                'media_path' => url('storage/vehicules/' . $mediaPath)
+                            ]);
+                        }
                     }
                 }
             }
+
+            // Retourner la réponse en JSON en cas de succès
+            return response()->json(["result" => [
+                "status"=>"success",
+                "result" => $vehicule
+            ]]);
+
+        } catch (ValidationException $e) {
+            // Gestion des erreurs de validation
+            $errors = $e->errors();
+            return response()->json(['error' => $errors]);
+
+        } catch (QueryException $e) {
+            // Gestion des erreurs liées à la base de données
+            return response()->json(['error' => $e->getMessage()]);
+
+        } catch (\Exception $e) {
+            // Gestion des exceptions générales
+            return response()->json(['error' => $e->getMessage()]);
         }
-        return $vehicule;
-    });
     }
 
 

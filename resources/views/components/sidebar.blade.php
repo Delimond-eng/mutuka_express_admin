@@ -12,16 +12,16 @@
                 </a>
             </li>
             <li class="{{ request()->is('cars.management') ? 'active' : '' }}"><a href="/cars.management" aria-expanded="false"><i
-                        class="nav-icon ti ti-comment"></i><span class="nav-title">Gestion des véhicules</span></a> </li>
+                        class="nav-icon ti ti-car"></i><span class="nav-title">Gestion des véhicules</span></a> </li>
 
             <li><a href="#" aria-expanded="false"><i
-                        class="nav-icon ti ti-comment"></i><span class="nav-title">Locations</span></a> </li>
+                        class="nav-icon ti ti-shopping-cart-full"></i><span class="nav-title">Locations</span></a> </li>
 
             <li><a href="mail-inbox.html" aria-expanded="false"><i
-                        class="nav-icon ti ti-email"></i><span class="nav-title">Requêtes d'achat</span></a> </li>
+                        class="nav-icon ti ti-shopping-cart"></i><span class="nav-title">Requêtes d'achat</span></a> </li>
             <li>
                 <a class="has-arrow" href="javascript:void(0)" aria-expanded="false"><i
-                        class="nav-icon ti ti-bag"></i> <span class="nav-title">Configurations</span></a>
+                        class="nav-icon ion ion-ios-build-outline"></i> <span class="nav-title">Configurations</span></a>
                 <ul aria-expanded="false">
                     <li> <a href="#">Spécifications</a> </li>
                     <li> <a href="#">Fonctionnalités</a> </li>

@@ -1,22 +1,18 @@
 new Vue({
     el:"#AppCarManagement",
     data: {
+        error:'',
         vehicule:{
             libelle:"",
             description:"",
-            brand_id:""
-        },
-        sell_price:{
-            amount:'',
-            currencie:'USD'
-        },
-        location_price:{
-            amount:'',
-            currencie:'USD'
+            brand_id:"",
+            loan:'',
+            sell:''
         },
         specifications: [],
         features : [],
-        medias:[]
+        medias:[],
+        isLoading:false
     },
 
     mounted(){
@@ -30,9 +26,30 @@ new Vue({
             feature_id:f.id,
             feat_value: ''
         }));
+        this.medias = [];
     },
 
     methods:{
+
+        cleanFields(){
+            this.vehicule = {
+                libelle:"",
+                description:"",
+                brand_id:"",
+                loan:'',
+                sell:''
+            };
+            this.specifications =  JSON.parse(this.$el.dataset.specifications).map(spec => ({
+                libelle: spec.libelle,
+                specification_id:spec.id,
+                spec_value: ''
+            }));
+            this.features =  JSON.parse(this.$el.dataset.features).map(f => ({
+                libelle: f.libelle,
+                feature_id:f.id,
+                feat_value: ''
+            }));
+        },
         handleFileChange(event) {
             const files = event.target.files; // Récupérer les fichiers sélectionnés
 
@@ -80,34 +97,34 @@ new Vue({
             return file;
         },
 
-        async createCarFromBackend(event) {
+        createCarFromBackend(event) {
             const formData = new FormData();
 
             // Ajouter les informations de vehicule
             formData.append('vehicule[libelle]', this.vehicule.libelle);
             formData.append('vehicule[description]', this.vehicule.description);
             formData.append('vehicule[brand_id]', this.vehicule.brand_id);
-
-            // Ajouter les prix
-            if (this.sell_price.amount !=='') {
-                formData.append('sell_price[amount]', this.sell_price.amount);
-                formData.append('sell_price[currencie]', this.sell_price.currencie);
+            if(this.vehicule.loan){
+                formData.append('vehicule[loan]', this.vehicule.loan);
             }
-            if (this.location_price.amount !=='') {
-                formData.append('location_price[amount]', this.location_price.amount);
-                formData.append('location_price[currencie]', this.location_price.currencie);
+            if(this.vehicule.sell){
+                formData.append('vehicule[sell]', this.vehicule.sell);
             }
 
             // Ajouter les spécifications
             this.specifications.forEach((spec, index) => {
-                formData.append(`specifications[${index}][specification_id]`, spec.specification_id);
-                formData.append(`specifications[${index}][spec_value]`, spec.spec_value);
+                if(spec.spec_value !== ''){
+                    formData.append(`specifications[${index}][specification_id]`, spec.specification_id);
+                    formData.append(`specifications[${index}][spec_value]`, spec.spec_value);
+                }
             });
 
             // Ajouter les fonctionnalités
             this.features.forEach((feat, index) => {
-                formData.append(`features[${index}][feature_id]`, feat.feature_id);
-                formData.append(`features[${index}][feat_value]`, feat.feat_value);
+                if(feat.feat_value){
+                    formData.append(`features[${index}][feature_id]`, feat.feature_id);
+                    formData.append(`features[${index}][feat_value]`, feat.feat_value);
+                }
             });
 
             // Ajouter les médias (fichiers)
@@ -118,35 +135,45 @@ new Vue({
 
             // Effectuer la requête asynchrone pour créer le véhicule
              // Utiliser fetch pour envoyer la requête
-             const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-    fetch('/car.create', {
-        method: 'POST',
-        headers: {
-            'X-CSRF-TOKEN': csrfToken, // Inclure le jeton CSRF dans l'en-tête
-        },
-        body: formData, // Envoie le FormData avec les fichiers
-    })
-    .then(response => {
-        if (!response.ok) {
-            // Si la réponse est OK, on la traite, sinon on lance une erreur
-            throw new Error('Erreur lors de la requête');
+            const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+            const self = this;
+            this.isLoading = true;
+            fetch('/car.create', {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': csrfToken, // Inclure le jeton CSRF dans l'en-tête
+                },
+                body: formData, // Envoie le FormData avec les fichiers
+            })
+            .then(response => {
+                if (!response.ok) {
+                    // Si la réponse est OK, on la traite, sinon on lance une erreur
+                    throw new Error('Erreur lors de la requête');
+                }
+                return response.json(); // Convertir la réponse en JSON
+            })
+            .then(data => {
+                // Gérer les données de la réponse
+               // Afficher les données reçues
+               self.isLoading = false;
+                if(data.error !== undefined){
+                    self.error = JSON.stringify(data.error);
+                    return;
+                }
+                self.error = '';
+                new swal({
+                    position: 'top-end',
+                    type: 'success',
+                    title: 'Véhicule créé avec succès !',
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+                location.href = "/cars.management"
+            })
+            .catch(err => {
+                self.isLoading = false;
+                self.error = err.toString();
+            });
         }
-        return response.json(); // Convertir la réponse en JSON
-    })
-    .then(data => {
-        // Gérer les données de la réponse
-        console.log(data); // Afficher les données reçues
-        if(data.error !== undefined){
-            console.log(JSON.stringfy(data.error))
-            return;
-        }
-        alert('Véhicule créé avec succès !');
-    })
-    .catch(err => {
-        // Gérer les erreurs
-        console.error('Erreur lors de la création du véhicule', err);
-        alert('Une erreur est survenue, veuillez réessayer.');
-    });
-        }
-    }
+    },
 })

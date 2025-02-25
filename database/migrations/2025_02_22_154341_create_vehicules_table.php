@@ -17,6 +17,8 @@ class CreateVehiculesTable extends Migration
             $table->id();
             $table->string("libelle");
             $table->string("description")->nullable();
+            $table->string("sell")->nullable();
+            $table->string("loan")->nullable();
             $table->string("status")->default("actif");
             $table->unsignedBigInteger("brand_id");
             $table->timestamps();

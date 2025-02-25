@@ -33,7 +33,9 @@ class Vehicule extends Model
     protected $fillable = [
         "libelle",
         "description",
-        "brand_id"
+        "brand_id",
+        "sell",
+        "loan"
     ];
 
     /**
@@ -116,11 +118,4 @@ class Vehicule extends Model
         return $this->hasMany(SellCarRequest::class, foreignKey:"vehicule_id", localKey:"id");
     }
 
-
-    public function location(){
-        return $this->hasOne(VehiculeLocationPrice::class, foreignKey:'vehicule_id', localKey:"id");
-    }
-    public function vente(){
-        return $this->hasOne(VehiculeSellPrice::class, foreignKey:'vehicule_id', localKey:"id");
-    }
 }

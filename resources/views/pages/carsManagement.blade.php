@@ -61,14 +61,14 @@
                                     <td>
                                         <div class="d-flex align-items-center">
                                             <div class="mr-4">
-                                                <img src="{{$v["medias"][0]["media_path"]}}" style="height: 50px" class="img-fluid" alt="Clients-03">
+                                                <img src="{{ count($v["medias"]) > 0 ? $v["medias"][0]["media_path"] : ''}}" style="height: 50px" class="img-fluid" alt="image">
                                             </div>
-                                            <p class="font-weight-bold">{{$v["libelle"]}}</p>
+                                            <p class="font-weight-bold text-dark">{{$v["libelle"]}}</p>
                                         </div>
                                     </td>
                                     <td>{{$v['brand']['libelle']}}</td>
-                                    <td>{{$v['location']['amount']}} {{$v['location']['currencie']}}</td>
-                                    <td>{{$v['vente']['amount']}} {{$v['vente']['currencie']}}</td>
+                                    <td>{{$v['loan']}} $</td>
+                                    <td>{{$v['sell']}} $</td>
                                     <td><a href="javascript:void(0)" class="dot bg-primary"></a><span>{{ $v['status']}}</span></td>
                                     <td><a href="javascript:void(0)"
                                             class="btn btn-icon btn-outline-primary btn-round mr-2 mb-2 mb-sm-0"><i
@@ -95,11 +95,17 @@
                     @csrf
                     <div class="modal-header">
                         <h5 class="modal-title">Création véhicule</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <button @click="cleanFields" type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">×</span>
                         </button>
                     </div>
                     <div class="modal-body">
+                        <div v-if='error' class="alert alert-inverse-danger alert-dismissible fade show" role="alert">
+                            <span> @{{error}}</span>
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <i class="ti ti-close"></i>
+                            </button>
+                        </div>
                         <div class="tab nav-border-bottom">
                             <ul class="nav nav-tabs" role="tablist">
                                 <li class="nav-item">
@@ -125,10 +131,6 @@
                             <div class="tab-content">
                                 <div class="tab-pane fade py-3 active show" id="infos" role="tabpanel" aria-labelledby="infos-tab">
                                     <div class="form-group">
-                                        <label for="exampleInputEmail1">Libellé *</label>
-                                        <input type="text" v-model="vehicule.libelle" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Entrez le libellé..." required>
-                                    </div>
-                                    <div class="form-group">
                                         <label for="exampleInputEmail1">Marque *</label>
                                         <select class="form-control" v-model="vehicule.brand_id"  required>
                                             <option selected hidden label="Sélectionnez une marque..."></option>
@@ -137,6 +139,12 @@
                                             @endforeach
                                         </select>
                                     </div>
+
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1">Modèle *</label>
+                                        <input type="text" v-model="vehicule.libelle" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Entrez le libellé..." required>
+                                    </div>
+
                                     <div class="form-group">
                                         <label for="exampleInputEmail1">Description *</label>
                                         <textarea v-model="vehicule.description"  class="form-control" placeholder="Entrez une description..." required></textarea>
@@ -194,10 +202,9 @@
                                     <div class="form-group">
                                         <label>Prix de location journalière</label>
                                         <div class="d-flex">
-                                            <input type="text" v-model="location_price.amount" class="form-control flex-fill w-100 mr-2" placeholder="0.00 $">
-                                            <select class="form-control" v-model="location_price.currencie" style="width: 100px">
+                                            <input type="text" v-model="vehicule.loan" class="form-control flex-fill w-100 mr-2" placeholder="0.00 $">
+                                            <select class="form-control" style="width: 100px">
                                                 <option value="USD" selected>USD</option>
-                                                <option value="CDF">CDF</option>
                                             </select>
                                         </div>
                                     </div>
@@ -207,10 +214,9 @@
                                     <div class="form-group">
                                         <label>Prix de vente</label>
                                         <div class="d-flex">
-                                            <input type="text" v-model="sell_price.amount" class="form-control flex-fill w-100 mr-2" placeholder="0.00 $">
-                                            <select class="form-control" v-model="sell_price.currencie" style="width: 100px">
+                                            <input type="text" v-model="vehicule.sell" class="form-control flex-fill w-100 mr-2" placeholder="0.00 $">
+                                            <select class="form-control" style="width: 100px">
                                                 <option value="USD" selected>USD</option>
-                                                <option value="CDF">CDF</option>
                                             </select>
                                         </div>
                                     </div>
@@ -219,8 +225,8 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
-                        <button type="submit" class="btn btn-success">Valider & soumettre</button>
+                        <button type="button" @click="cleanFields" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                        <button type="submit" :disabled="isLoading" class="btn btn-success"> <span v-if="isLoading" class="spinner spinner-border spinner-border-sm"></span> Valider & soumettre</button>
                     </div>
                 </form>
             </div>
