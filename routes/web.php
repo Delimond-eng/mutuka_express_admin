@@ -15,11 +15,17 @@ use Illuminate\Support\Facades\Auth;
 |
 */
 
-/* Route::view("pages.dashboard"); */
+/**
+ * PUBLIC ROUTE
+*/
+Route::get("/", function () {  });
+
+
+/* ADMIN ROUTE */
 
 Auth::routes();
 
-Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/admin', [App\Http\Controllers\HomeController::class, 'index'])->name('admin');
 //Car manage route view call
 Route::get("/cars.management",[AppController::class, 'carsManagementView'])->name('cars.management');
 // Route allow to create new car with all config

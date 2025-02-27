@@ -4,20 +4,20 @@
     <div class="sidebar-nav scrollbar scroll_light">
         <ul class="metismenu " id="sidebarNav">
             <li class="nav-static-title">MAIN</li>
-            <li class="{{ request()->is('/') ? 'active' : '' }}">
-                <a href="/">
+            <li class="{{ Str::contains(request()->path(), 'admin') ? 'active' : '' }}">
+                <a href="{{ url("/admin") }}">
                     <i class="nav-icon ti ti-rocket"></i>
                     <span class="nav-title">Tableau de bord</span>
                     <span class="nav-label label label-danger">9</span>
                 </a>
             </li>
-            <li class="{{ request()->is('cars.management') ? 'active' : '' }}"><a href="/cars.management" aria-expanded="false"><i
+            <li class="{{ Str::contains(request()->path(), 'cars.management') ? 'active' : '' }}"><a href="/cars.management" aria-expanded="false"><i
                         class="nav-icon ti ti-car"></i><span class="nav-title">Gestion des véhicules</span></a> </li>
 
-            <li class="{{ request()->is('/loans') ? 'active' : '' }}"><a href="{{ url("/loans") }}" aria-expanded="false"><i
+            <li class="{{ Str::contains(request()->path(), 'loan') ? 'active' : '' }}"><a href="{{ url("/loans") }}" aria-expanded="false"><i
                         class="nav-icon ti ti-shopping-cart-full"></i><span class="nav-title">Locations</span></a> </li>
 
-            <li class="{{ request()->is('/buy.requests"') ? 'active' : '' }}"><a href="{{ url("/buy.requests") }}" aria-expanded="false"><i
+            <li class="{{ Str::contains(request()->path(), 'buy') ? 'active' : '' }}"><a href="{{ url("/buy.requests") }}" aria-expanded="false"><i
                         class="nav-icon ti ti-shopping-cart"></i><span class="nav-title">Requêtes d'achat</span></a> </li>
             <li class="{{ Str::contains(request()->path(), 'config.') ? 'active' : '' }}">
                 <a class="has-arrow" href="javascript:void(0)" aria-expanded="false"><i
