@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AppController;
+use App\Http\Controllers\PublicController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
@@ -18,7 +19,8 @@ use Illuminate\Support\Facades\Auth;
 /**
  * PUBLIC ROUTE
 */
-Route::get("/", function () {  });
+Route::get("/", [PublicController::class,"index"])->name("home");
+Route::get("/car_details", [PublicController::class,"viewCarDetails"])->name("home");
 
 
 /* ADMIN ROUTE */
