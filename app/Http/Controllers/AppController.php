@@ -15,6 +15,7 @@ use App\Models\VehiculeMedia;
 use App\Models\VehiculeSellPrice;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\DB;
 
 class AppController extends Controller
 {
@@ -121,6 +122,81 @@ class AppController extends Controller
             // Gestion des exceptions générales
             return response()->json(['error' => $e->getMessage()]);
         }
+    }
+
+    public function createSpecification(Request $request)
+    {
+        $request->validate([
+            'libelle' => 'required|string',
+        ]);
+        Specification::create([
+            'libelle' => $request->libelle,
+        ]);
+        return redirect()->to('/config.specifications')->with('success', 'Spécification créée avec succès.');
+    }
+    
+
+
+    public function createBrand(Request $request){
+        $request->validate([
+            'libelle' => 'required|string',
+        ]);
+        CarBrand::create([
+            'libelle' => $request->libelle,
+        ]);
+        return redirect()->to('/config.brands')->with('success', 'Spécification créée avec succès.');
+    }
+
+
+    public function createFeature(Request $request){
+        $request->validate([
+            'libelle' => 'required|string',
+        ]);
+        Feature::create([
+            'libelle' => $request->libelle,
+        ]);
+        return redirect()->to('/config.features')->with('success', 'Spécification créée avec succès.');
+    }
+    /**
+     * GET SPECIFICATION DATAS AND VIEW
+    */
+    public function viewAllSpecifications(){  
+        $specifications = Specification::orderBy("id","DESC")
+                ->where("status", "actif")
+                ->get();
+        return view("pages.config.specifications", ["specifications"=> $specifications]);
+    }
+    public function viewAllBrands(){  
+        $brands = CarBrand::orderBy("id","DESC")
+                ->where("status", "actif")
+                ->get();;
+        return view("pages.config.brands", ["brands"=> $brands]);
+    }
+
+    public function viewAllFeatures(){
+        $features = Feature::orderBy("id","DESC")
+                ->where("status", "actif")
+                ->get();
+        return view("pages.config.features", ["features"=> $features]);
+    }
+
+
+    public function deleteDynamically(Request $request){
+        $table = $request->query("table");
+        $id = $request->query("id");
+        if (!$table || !$id) {
+            return redirect()->back()->with('error', 'Table ou ID manquant.');
+        }
+        DB::table($table)->where("id", $id)->delete();
+        return redirect()->back()->with('success', 'Enregistrement supprimé avec succès.');
+    }
+
+
+    public function viewLoans(Request $request){ 
+        return view('pages.loan');
+    }
+    public function viewSellRequest(Request $request){ 
+        return view('pages.sell');
     }
 
 

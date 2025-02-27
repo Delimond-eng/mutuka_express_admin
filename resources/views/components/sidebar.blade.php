@@ -14,19 +14,18 @@
             <li class="{{ request()->is('cars.management') ? 'active' : '' }}"><a href="/cars.management" aria-expanded="false"><i
                         class="nav-icon ti ti-car"></i><span class="nav-title">Gestion des véhicules</span></a> </li>
 
-            <li><a href="#" aria-expanded="false"><i
+            <li class="{{ request()->is('/loans') ? 'active' : '' }}"><a href="{{ url("/loans") }}" aria-expanded="false"><i
                         class="nav-icon ti ti-shopping-cart-full"></i><span class="nav-title">Locations</span></a> </li>
 
-            <li><a href="mail-inbox.html" aria-expanded="false"><i
+            <li class="{{ request()->is('/buy.requests"') ? 'active' : '' }}"><a href="{{ url("/buy.requests") }}" aria-expanded="false"><i
                         class="nav-icon ti ti-shopping-cart"></i><span class="nav-title">Requêtes d'achat</span></a> </li>
-            <li>
+            <li class="{{ Str::contains(request()->path(), 'config.') ? 'active' : '' }}">
                 <a class="has-arrow" href="javascript:void(0)" aria-expanded="false"><i
                         class="nav-icon ion ion-ios-build-outline"></i> <span class="nav-title">Configurations</span></a>
                 <ul aria-expanded="false">
-                    <li> <a href="#">Spécifications</a> </li>
-                    <li> <a href="#">Fonctionnalités</a> </li>
-                    <li> <a href="#">Marques</a> </li>
-                    <li> <a href="#">Location Prix</a> </li>
+                    <li> <a href="{{ url("/config.specifications") }}">Spécifications</a> </li>
+                    <li> <a href="{{ url("/config.features") }}">Fonctionnalités</a> </li>
+                    <li> <a href="{{ url("/config.brands") }}">Marques</a> </li>
                 </ul>
             </li>
         </ul>

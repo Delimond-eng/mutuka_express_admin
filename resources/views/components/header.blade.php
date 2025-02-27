@@ -46,10 +46,10 @@
                             aria-labelledby="navbarDropdown">
                             <ul>
                                 <li class="dropdown-header bg-gradient p-4 text-white text-left">
-                                    Notifications
+                                    Notifications des requêtes de location et achat véhicule
                                     <a href="#"
                                         class="float-right btn btn-square btn-inverse-light btn-xs m-0">
-                                        <span class="font-13"> Clear all</span></a>
+                                        <span class="font-13"> Effacer tout</span></a>
                                 </li>
                                 <li class="dropdown-body min-h-240 nicescroll">
                                     <ul class="scrollbar scroll_dark max-h-240">
@@ -145,7 +145,7 @@
                     <li class="nav-item dropdown user-profile">
                         <a href="javascript:void(0)" class="nav-link dropdown-toggle " id="navbarDropdown4"
                             role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <img src="assets/img/avtar/02.jpg" alt="avtar-img">
+                            <img src="assets/img/logo-icon.png" alt="avtar-img">
                             <span class="bg-success user-status"></span>
                         </a>
                         <div class="dropdown-menu animated fadeIn" aria-labelledby="navbarDropdown">
