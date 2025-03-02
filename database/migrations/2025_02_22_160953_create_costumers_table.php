@@ -20,6 +20,8 @@ class CreateCostumersTable extends Migration
             $table->string("phone");
             $table->string("email")->nullable();
             $table->string("profession")->nullable();
+            $table->string("ipaddress");
+            $table->string("latlng")->nullable();
             $table->string("status")->default("actif");
             $table->timestamps();
         });

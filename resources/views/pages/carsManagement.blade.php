@@ -63,7 +63,7 @@
                                             <div class="mr-4">
                                                 <img src="{{ count($v["medias"]) > 0 ? $v["medias"][0]["media_path"] : ''}}" style="height: 50px" class="img-fluid" alt="image">
                                             </div>
-                                            <p class="font-weight-bold text-dark">{{$v["libelle"]}}</p>
+                                            <p class="font-weight-bold text-dark">{{$v["libelle"]}} </p>
                                         </div>
                                     </td>
                                     <td>{{$v['brand']['libelle']}}</td>

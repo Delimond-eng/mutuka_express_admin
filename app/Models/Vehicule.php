@@ -72,7 +72,7 @@ class Vehicule extends Model
      * @return HasMany
     */
     public function medias(): HasMany{
-        return $this->hasMany(VehiculeMedia::class, foreignKey:"vehicule_id", localKey:"id");
+        return $this->hasMany(VehiculeMedia::class,"vehicule_id", "id");
     }
 
     /**
@@ -80,7 +80,7 @@ class Vehicule extends Model
      * @return BelongsTo
     */
     public function brand() : BelongsTo{
-        return $this->belongsTo(CarBrand::class, foreignKey:"brand_id");
+        return $this->belongsTo(CarBrand::class, "brand_id");
     }
 
 
@@ -89,7 +89,7 @@ class Vehicule extends Model
      * @return HasMany
     */
     public function features(): HasMany{
-        return $this->hasMany(VehiculeFeature::class, foreignKey:"vehicule_id", localKey:"id");
+        return $this->hasMany(VehiculeFeature::class, "vehicule_id", "id");
     }
 
     /**
@@ -97,7 +97,7 @@ class Vehicule extends Model
      * @return HasMany
     */
     public function specifications(): HasMany{
-        return $this->hasMany(VehiculeSpecification::class, foreignKey:"vehicule_id", localKey:"id");
+        return $this->hasMany(VehiculeSpecification::class, "vehicule_id", "id");
     }
 
 
@@ -106,7 +106,7 @@ class Vehicule extends Model
      * @return HasMany
     */
     public function locationRequests(): HasMany{
-        return $this->hasMany(CarLocationRequest::class, foreignKey:"vehicule_id", localKey:"id");
+        return $this->hasMany(CarLocationRequest::class, "vehicule_id", "id");
     }
 
 
@@ -115,7 +115,7 @@ class Vehicule extends Model
      * @return HasMany
     */
     public function sellRequests(): HasMany{
-        return $this->hasMany(SellCarRequest::class, foreignKey:"vehicule_id", localKey:"id");
+        return $this->hasMany(SellCarRequest::class,"vehicule_id","id");
     }
 
 }

@@ -33,6 +33,9 @@ class Costumer extends Model
         "address",
         "phone",
         "email",
+        "ipaddress",
+        "ipaddress",
+        "latlng",
         "profession",
     ];
 

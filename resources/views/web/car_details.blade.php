@@ -1,6 +1,9 @@
 @extends("layouts.public")
 
 @section("content")
+    <!-- header begin -->
+    @include("components.public.header")
+    <!-- header close -->
     <div class="no-bottom no-top zebra" id="content">
         <div id="top"></div>
 
@@ -11,7 +14,7 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-md-12 text-center">
-                            <h1>Vehicle Fleet</h1>
+                            <h1>{{ $car["libelle"] }}</h1>
                         </div>
                         <div class="clearfix"></div>
                     </div>
@@ -25,104 +28,52 @@
                 <div class="row g-5">
                     <div class="col-lg-6">
                         <div id="slider-carousel" class="owl-carousel">
-                            <div class="item">
-                                <img src="assets2/images/car-single/1.jpg" alt="">
-                            </div>
-                            <div class="item">
-                                <img src="assets2/images/car-single/2.jpg" alt="">
-                            </div>
-                            <div class="item">
-                                <img src="assets2/images/car-single/3.jpg" alt="">
-                            </div>
-                            <div class="item">
-                                <img src="assets2/images/car-single/4.jpg" alt="">
-                            </div>
+
+                            @foreach ($car["medias"] as $media)
+                                <div class="item">
+                                    <img src="{{ $media["media_path"] }}" alt="pic">
+                                </div>
+                            @endforeach
                         </div>
                     </div>
 
                     <div class="col-lg-3">
-                        <h3>BMW M2 2020</h3>
-                        <p>The BMW M2 is the high-performance version of the 2 Series 2-door coupé. The first
-                            generation of the M2 is the F87 coupé and is powered by turbocharged.</p>
+                        <h3>{{ $car["libelle"] }}</h3>
+                        <p>{{ $car["descriptio,"] }}</p>
 
                         <div class="spacer-10"></div>
 
                         <h4>Specifications</h4>
                         <div class="de-spec">
+
+                            @foreach ($car["specifications"] as $spec )
                             <div class="d-row">
-                                <span class="d-title">Body</span>
-                                <spam class="d-value">Sedan</spam>
+                                <span class="d-title">{{ $spec["specification"]["libelle"] }}</span>
+                                <spam class="d-value">{{ $spec["spec_value"] }}</spam>
                             </div>
-                            <div class="d-row">
-                                <span class="d-title">Seat</span>
-                                <spam class="d-value">2 seats</spam>
-                            </div>
-                            <div class="d-row">
-                                <span class="d-title">Door</span>
-                                <spam class="d-value">2 doors</spam>
-                            </div>
-                            <div class="d-row">
-                                <span class="d-title">Luggage</span>
-                                <spam class="d-value">150</spam>
-                            </div>
-                            <div class="d-row">
-                                <span class="d-title">Fuel Type</span>
-                                <spam class="d-value">Hybird</spam>
-                            </div>
-                            <div class="d-row">
-                                <span class="d-title">Engine</span>
-                                <spam class="d-value">3000</spam>
-                            </div>
-                            <div class="d-row">
-                                <span class="d-title">Year</span>
-                                <spam class="d-value">2020</spam>
-                            </div>
-                            <div class="d-row">
-                                <span class="d-title">Mileage</span>
-                                <spam class="d-value">200</spam>
-                            </div>
-                            <div class="d-row">
-                                <span class="d-title">Transmission</span>
-                                <spam class="d-value">Automatic</spam>
-                            </div>
-                            <div class="d-row">
-                                <span class="d-title">Drive</span>
-                                <spam class="d-value">4WD</spam>
-                            </div>
-                            <div class="d-row">
-                                <span class="d-title">Fuel Economy</span>
-                                <spam class="d-value">18.5</spam>
-                            </div>
-                            <div class="d-row">
-                                <span class="d-title">Exterior Color</span>
-                                <spam class="d-value">Blue Metalic</spam>
-                            </div>
-                            <div class="d-row">
-                                <span class="d-title">Interior Color</span>
-                                <spam class="d-value">Black</spam>
-                            </div>
+                            @endforeach
+                            
                         </div>
 
                         <div class="spacer-single"></div>
 
                         <h4>Features</h4>
                         <ul class="ul-style-2">
-                            <li>Bluetooth</li>
-                            <li>Multimedia Player</li>
-                            <li>Central Lock</li>
-                            <li>Sunroof</li>
+                            @foreach ($car["features"] as $feat )
+                                <li>{{ $feat["feature"]["libelle"] }}</li>
+                            @endforeach
                         </ul>
                     </div>
 
                     <div class="col-lg-3">
                         <div class="de-price text-center">
-                            Daily rate
-                            <h3>$265</h3>
+                            Tarif journalier
+                            <h3>${{ $car["loan"] }}</h3>
                         </div>
                         <div class="spacer-30"></div>
                         <div class="de-box mb25">
                             <form name="contactForm" id='contact_form' method="post">
-                                <h4>Booking this car</h4>
+                                <h4>Reservation du véhicule</h4>
 
                                 <div class="spacer-20"></div>
 

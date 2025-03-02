@@ -102,7 +102,6 @@ class AppController extends Controller
                     }
                 }
             }
-
             // Retourner la réponse en JSON en cas de succès
             return response()->json(["result" => [
                 "status"=>"success",

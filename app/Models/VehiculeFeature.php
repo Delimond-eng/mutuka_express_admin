@@ -67,10 +67,10 @@ class VehiculeFeature extends Model
 
 
     public function vehicule() : BelongsTo{
-        return $this->belongsTo(Vehicule::class, foreignKey:"vehicule_id");
+        return $this->belongsTo(Vehicule::class,"vehicule_id");
     }
 
     public function feature() : BelongsTo{
-        return $this->belongsTo(Feature::class, foreignKey:"feature_id");
+        return $this->belongsTo(Feature::class,"feature_id");
     }
 }

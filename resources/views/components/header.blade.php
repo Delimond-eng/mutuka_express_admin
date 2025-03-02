@@ -46,7 +46,7 @@
                             aria-labelledby="navbarDropdown">
                             <ul>
                                 <li class="dropdown-header bg-gradient p-4 text-white text-left">
-                                    Notifications des requêtes de location et achat véhicule
+                                    Requêtes d'achat & location
                                     <a href="#"
                                         class="float-right btn btn-square btn-inverse-light btn-xs m-0">
                                         <span class="font-13"> Effacer tout</span></a>
@@ -136,7 +136,7 @@
                                     </ul>
                                 </li>
                                 <li class="dropdown-footer">
-                                    <a class="font-13" href="javascript:void(0)"> View All Notifications
+                                    <a class="font-13" href="javascript:void(0)"> Voir toutes les requêtes en attente.
                                     </a>
                                 </li>
                             </ul>
@@ -157,18 +157,15 @@
                                     </div>
                                     <a href="#" class="text-white font-20 tooltip-wrapper"
                                         data-toggle="tooltip" data-placement="top" title=""
-                                        data-original-title="Logout"> <i class="zmdi zmdi-power"></i></a>
+                                        data-original-title="Déconnexion"> <i class="zmdi zmdi-power"></i></a>
                                 </div>
                             </div>
                             <div class="p-4">
                                 <a class="dropdown-item d-flex nav-link" href="javascript:void(0)">
-                                    <i class="fa fa-user pr-2 text-success"></i> Profile</a>
+                                    <i class="fa fa-user pr-2 text-success"></i> Profil</a>
+                            
                                 <a class="dropdown-item d-flex nav-link" href="javascript:void(0)">
-                                    <i class="fa fa-envelope pr-2 text-primary"></i> Inbox
-                                    <span class="badge badge-primary ml-auto">6</span>
-                                </a>
-                                <a class="dropdown-item d-flex nav-link" href="javascript:void(0)">
-                                    <i class=" ti ti-settings pr-2 text-info"></i> Settings
+                                    <i class=" ti ti-settings pr-2 text-info"></i> Paramètres
                                 </a>
 
                             </div>
