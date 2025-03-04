@@ -88,7 +88,7 @@
 
                 <!-- Single item -->
                 <div class="carousel-item jarallax">
-                    <img src="assets2/images/slider/2.jpg" class="jarallax-img" alt="">
+                    <img src="assets2/images/slider/4.jpg" class="jarallax-img" alt="">
                     <div class="mask">
                         <div class="no-top no-bottom">
                             <div class="h-100 v-center">
@@ -113,7 +113,7 @@
 
                 <!-- Single item -->
                 <div class="carousel-item jarallax">
-                    <img src="assets2/images/slider/3.jpg" class="jarallax-img" alt="">
+                    <img src="assets2/images/slider/5.jpg" class="jarallax-img" alt="">
                     <div class="mask">
                         <div class="no-top no-bottom">
                             <div class="h-100 v-center">
@@ -122,7 +122,7 @@
                                         <div class="col-lg-6 offset-lg-3 text-center mb-sm-30">
                                             <h1 class="s3 mb-3 wow fadeInUp">Meilleurs conducteurs</h1>
                                             <p class="lead wow fadeInUp" data-wow-delay=".3s">Nos chauffeurs
-                                                expérimentés sont prêts à accompagner votre voyage.</p>
+                                                expérimentés sont prêts à accompagner partout !</p>
                                             <div class="spacer-10"></div>
                                             <a class="btn-line mb10 wow fadeInUp" data-wow-delay=".6s"
                                                 href="#">Reservez maintenant</a>
@@ -263,11 +263,10 @@
 
         <!-- loan car -->
         
-
+        @if(count($cars) > 0)
         <section id="section-cars">
             <div class="container">
                 <div class="row align-items-center">
-
                     <div class="col-lg-6 offset-lg-3 text-center">
                         <span class="subtitle">Veuillez faire votre choix</h2></span>
                         <h2>Notre flotte de véhicules.</h2>
@@ -308,11 +307,31 @@
                 <div class="row d-flex justify-content-center align-items-center">
                     <div class="col-lg-12 text-center">
                     <a class="btn-line mb10 wow fadeInUp" data-wow-delay=".6s"
-                    href="{{ url("/more_cars") }}">Achetez un véhicule</a>
+                    href="{{ url("/more_cars") }}">Voir plus des véhicules</a>
                     </div>
                 </div>
             </div>
         </section>
+        @else
+        <section aria-label="section">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-lg-6 offset-lg-3 text-center">
+                        <span class="subtitle">Indisponible !</h2></span>
+                        <h2>Notre flotte de véhicules.</h2>
+                        <p>Notre flotte des véhicules est Indisponible pour l'instant. veuillez <a href="#footer">entrer en contact</a> avec l'administrateur pour plus d'informations</p>
+                        <div class="spacer-20"></div>
+                    </div>
+                    <div class="clearfix"></div>
+
+                    <div class="col-lg-6 offset-lg-3">
+                        <img src="assets2/images/misc/car-2.png" alt="" class="img-fluid wow fadeInUp">
+                    </div>
+                </div>
+            </div>
+        </section>
+        @endif
+
         <!-- end -->
 
         <section class="text-light jarallax" aria-label="section">

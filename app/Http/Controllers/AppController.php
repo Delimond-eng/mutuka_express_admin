@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\CarBrand;
+use App\Models\CarLocationRequest;
 use App\Models\Feature;
 use App\Models\Specification;
 use Illuminate\Http\Request;
@@ -48,20 +49,21 @@ class AppController extends Controller
 
     public function createCar(Request $request)
     {
-        $rules = [
-            'vehicule.libelle' => 'required|string',
-            'vehicule.description' => 'required|string',
-            'vehicule.brand_id' => 'required|int|exists:car_brands,id',
-            'vehicule.sell' => 'nullable|string',
-            'vehicule.loan' => 'nullable|string',
-            'specifications.*.specification_id' => 'required|int',
-            'specifications.*.spec_value' => 'required|string',
-            'features.*.feature_id' => 'required|int',
-            'features.*.feat_value' => 'required|string',
-            'medias' => 'required|array', // Validation pour les fichiers (images)
-            'medias.*.media_path' => 'required|file' // Validation pour les fichiers (images)
-        ];
+        
         try {
+            $rules = [
+                'vehicule.libelle' => 'required|string',
+                'vehicule.description' => 'required|string',
+                'vehicule.brand_id' => 'required|int|exists:car_brands,id',
+                'vehicule.sell' => 'nullable|string',
+                'vehicule.loan' => 'nullable|string',
+                'specifications.*.specification_id' => 'required|int',
+                'specifications.*.spec_value' => 'required|string',
+                'features.*.feature_id' => 'required|int',
+                'features.*.feat_value' => 'required|string',
+                'medias' => 'required|array', // Validation pour les fichiers (images)
+                'medias.*.media_path' => 'required|file' // Validation pour les fichiers (images)
+            ];
             // Validation des données
             $data = $request->validate($rules);
 
@@ -191,12 +193,14 @@ class AppController extends Controller
     }
 
 
-    public function viewLoans(Request $request){ 
-        return view('pages.loan');
+    public function viewLoans(){ 
+        $carLoansRequest = CarLocationRequest::with("vehicule.brand")
+                            ->with("costumer")
+                            ->orderBy("id","DESC")
+                            ->get();
+        return view('pages.loan', ["requests"=> $carLoansRequest]);
     }
     public function viewSellRequest(Request $request){ 
         return view('pages.sell');
     }
-
-
 }

@@ -19,6 +19,9 @@ class CreateCarLocationRequestsTable extends Migration
             $table->unsignedBigInteger("vehicule_id");
             $table->date("pick_up_date")->nullable();
             $table->string("pick_up_area")->nullable();
+            $table->string("code");
+            $table->string("recommandation")->nullable();
+            $table->string("status")->default("En attente");
             $table->timestamps();
         });
     }

@@ -21,12 +21,10 @@ use Illuminate\Support\Facades\Auth;
 */
 Route::get("/", [PublicController::class,"index"])->name("home");
 Route::get("/car_details", [PublicController::class,"getSingleCar"])->name("home");
-Route::view("/quick_booking", "web.quick_booking");
+Route::get("/quick_booking", [PublicController::class,"quickBooking"]);
 Route::get("/more_cars", [PublicController::class,"getMoreCars"]);
+Route::post("/booking_request", [PublicController::class, "makeBookingRequest"]);
 
-
-
-//http://127.0.0.1:8000/storage/vehicules/V6ZUqpdHeTB12yh5uae3pVmKblxoUwtmkB3cRnDo.jpg
 
 /* ADMIN ROUTE */
 

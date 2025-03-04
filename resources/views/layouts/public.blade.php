@@ -9,6 +9,7 @@
     <meta content="Rentaly - Multipurpose Vehicle Car Rental Website Template" name="description">
     <meta content="" name="keywords">
     <meta content="" name="author">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- CSS Files
     ================================================== -->
     <link href="assets2/css/bootstrap.min.css" rel="stylesheet" type="text/css" id="bootstrap">
@@ -41,6 +42,8 @@
     ================================================== -->
     <script src="assets2/js/plugins.js"></script>
     <script src="assets2/js/designesia.js"></script>
+
+    @yield("scripts")
 
 </body>
 

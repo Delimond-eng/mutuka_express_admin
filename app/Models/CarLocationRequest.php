@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Str;
 
 class CarLocationRequest extends Model
 {
@@ -34,6 +35,8 @@ class CarLocationRequest extends Model
         "vehicule_id",
         "pick_up_date",
         "pick_up_area",
+        "code",
+        ""
     ];
 
     /**
@@ -67,11 +70,25 @@ class CarLocationRequest extends Model
     ];
 
 
+    public static function getUniqueCode()
+    {
+        do {
+            // Générer un code unique
+            $randomCode = strtoupper(Str::random(2)); // Exemple : "A9"
+            $number = str_pad(rand(0, 9999), 4, '0', STR_PAD_LEFT); // Exemple : "0123"
+            $code = "MTE-{$number}{$randomCode}"; // Exemple final : "MTE-0123A9"
+
+        } while (self::where('code', $code)->exists());
+
+        return $code;
+    }
+
+
     public function vehicule() : BelongsTo{
-        return $this->belongsTo(Vehicule::class, foreignKey:"vehicule_id");
+        return $this->belongsTo(Vehicule::class, "vehicule_id");
     }
 
     public function costumer() : BelongsTo{
-        return $this->belongsTo(Costumer::class, foreignKey:"costumer_id");
+        return $this->belongsTo(Costumer::class, "costumer_id");
     }
 }

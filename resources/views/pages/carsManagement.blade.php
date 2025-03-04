@@ -75,7 +75,7 @@
                                                 class="ti ti-pencil"></i></a>
                                         <a href="javascript:void(0)" class="btn btn-icon  mr-2 btn-outline-info btn-round"><i
                                                 class="ti ti-eye"></i></a>
-                                        <a href="javascript:void(0)" class="btn btn-icon btn-outline-danger btn-round"><i
+                                        <a  onclick="return confirm('Voulez-vous vraiment supprimer cet élément ?');" href="/config.delete?table=vehicules&id={{ $v['id'] }}" class="btn btn-icon btn-outline-danger btn-round"><i
                                                 class="ti ti-trash"></i></a>
                                     </td>
                                 </tr>
